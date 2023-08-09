@@ -7,7 +7,7 @@ import org.apache.rocketmq.client.consumer.listener.MessageListenerConcurrently;
 import org.apache.rocketmq.client.exception.MQClientException;
 import org.apache.rocketmq.common.consumer.ConsumeFromWhere;
 import org.apache.rocketmq.common.message.MessageExt;
-import org.apache.rocketmq.common.protocol.heartbeat.MessageModel;
+import org.apache.rocketmq.remoting.protocol.heartbeat.MessageModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +21,7 @@ public class PushConsumer {
     public void handlerMsg(String topic) throws MQClientException {
         DefaultMQPushConsumer consumer = new DefaultMQPushConsumer();
         consumer.setConsumerGroup("sz");
+        // 可以通过setNamesrvAddr方法设置多个nameserver地址，用分号隔开
         consumer.setNamesrvAddr("localhost:9876");
         consumer.setConsumeFromWhere(ConsumeFromWhere.CONSUME_FROM_FIRST_OFFSET);
         consumer.setMessageModel(MessageModel.BROADCASTING);
@@ -28,7 +29,7 @@ public class PushConsumer {
         consumer.registerMessageListener(new MessageListenerConcurrently() {
             @Override
             public ConsumeConcurrentlyStatus consumeMessage(List<MessageExt> msgs, ConsumeConcurrentlyContext context) {
-                System.out.println(Thread.currentThread().getName() + "Receive New Message: " + msgs + "%n");
+                System.out.println(Thread.currentThread().getName() + " Receive New Message: " + msgs + "%n");
                 return ConsumeConcurrentlyStatus.CONSUME_SUCCESS;
             }
         });
