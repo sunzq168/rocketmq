@@ -16,6 +16,10 @@ public class RocketmqApplication {
 
     public static void main(String[] args) throws MQClientException {
         ConfigurableApplicationContext context = SpringApplication.run(RocketmqApplication.class, args);
+        // test(context);
+    }
+
+    private static void test( ConfigurableApplicationContext context) throws MQClientException {
         //ProducerServer producer = context.getBean(ProducerServer.class);
         TransactionProducerServer producer = context.getBean(TransactionProducerServer.class);
         for (int i = 0;i<10;i++) {
